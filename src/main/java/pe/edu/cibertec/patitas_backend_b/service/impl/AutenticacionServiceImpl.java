@@ -21,7 +21,7 @@ public class AutenticacionServiceImpl implements AutenticacionService {
     public String[] validarUsuario(LoginRequestDTO loginRequestDTO) throws IOException {
 
         String[] datosUsuario = null;
-        Resource resource = resourceLoader.getResource("classpath:usuarios.txt");
+        Resource resource = resourceLoader.getResource("classpath:usuario.txt");
 
         try (BufferedReader br = new BufferedReader(new FileReader(resource.getFile()))){
 
