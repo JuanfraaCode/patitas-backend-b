@@ -7,10 +7,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pe.edu.cibertec.patitas_backend_b.dto.LoginRequestDTO;
 import pe.edu.cibertec.patitas_backend_b.dto.LoginResponseDTO;
+import pe.edu.cibertec.patitas_backend_b.dto.LogoutRequestDTO;
+import pe.edu.cibertec.patitas_backend_b.dto.LogoutResponseDTO;
 import pe.edu.cibertec.patitas_backend_b.service.AutenticacionService;
 
 import java.time.Duration;
 import java.util.Arrays;
+import java.util.Date;
 
 
 @RestController
@@ -24,7 +27,7 @@ public class AutenticacionController {
     public LoginResponseDTO login(@RequestBody LoginRequestDTO loginRequestDTO){
 
         try {
-            Thread.sleep(Duration.ofSeconds(10));
+            Thread.sleep(Duration.ofSeconds(5));
             String[] datosUsuario = autenticacionService.validarUsuario(loginRequestDTO);
             System.out.println("Respuesta Backend: " + Arrays.toString(datosUsuario));
 
@@ -38,4 +41,27 @@ public class AutenticacionController {
         }
 
     }
+
+    @PostMapping("/logout")
+    public LogoutResponseDTO logout(@RequestBody LogoutRequestDTO logoutRequestDTO ) {
+
+        try {
+
+            Thread.sleep(Duration.ofSeconds(5));
+            Date fechaLogout = autenticacionService.cerrarSesionUsuario(logoutRequestDTO);
+            System.out.println("Respuesta Backend: " + fechaLogout);
+
+            if (fechaLogout == null) {
+                return new LogoutResponseDTO(false, null, "Error: No se pudo registrar auditoria");
+            }
+            return  new LogoutResponseDTO(true, fechaLogout, "");
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return new LogoutResponseDTO(false, null, "Error: Ocurrio un problema");
+        }
+
+    }
+
+
 }
